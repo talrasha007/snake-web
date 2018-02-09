@@ -2,7 +2,7 @@
   <div id="app">
     <ul class="top-nav">
       <li class="brand">
-        <font-awesome-icon :icon="['fab', 'snapchat-ghost']" class="pink" />
+        <font-awesome-icon :icon="['fab', 'snapchat-ghost']" class="icon" />
         加密贪吃蛇
       </li>
       <li class="placeholder"></li>
@@ -65,7 +65,7 @@ export default {
     align-items: center;
     font-size: 1.3em;
 
-    .pink {
+    .icon {
       width: 40px;
       height: 45px;
       margin-right: 10px;
@@ -109,9 +109,5 @@ html, body {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2a2825;
-}
-
-.pink {
-  color: #e96bd4;
 }
 </style>
