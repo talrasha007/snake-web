@@ -1,13 +1,20 @@
 <template>
   <div id="app">
+    <font-awesome-icon :icon="['fab', 'ethereum']"></font-awesome-icon>
     <img src="./assets/logo.png">
     <router-view/>
   </div>
 </template>
 
 <script>
+import FontAwesomeIcon from '@fortawesome/vue-fontawesome';
+
 export default {
-  name: 'App'
+  name: 'App',
+
+  components: {
+    FontAwesomeIcon
+  }
 }
 </script>
 
