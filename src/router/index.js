@@ -8,7 +8,11 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'HelloWorld',
+      redirect: { name: window.web3 ? 'mySnake' : 'error' }
+    },
+    {
+      path: '/my-snake',
+      name: 'mySnake',
       component: HelloWorld
     }
   ]
