@@ -3,6 +3,7 @@ import Router from 'vue-router';
 import Profile from '../components/Profile';
 import Marketplace from '../components/Marketplace';
 import SnakeList from '../components/SnakeList';
+import Admin from '../components/Admin';
 
 Vue.use(Router);
 
@@ -11,6 +12,11 @@ export default new Router({
     {
       path: '/',
       redirect: { name: window.web3 ? 'mySnake' : 'error' }
+    },
+    {
+      path: '/admin',
+      name: 'admin',
+      component: Admin
     },
     {
       path: '/my-snake',
