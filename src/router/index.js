@@ -1,7 +1,8 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Profile from '@/components/Profile';
-import Marketplace, { SnakeList } from '@/components/Marketplace';
+import Profile from '../components/Profile';
+import Marketplace from '../components/Marketplace';
+import SnakeList from '../components/SnakeList';
 
 Vue.use(Router);
 

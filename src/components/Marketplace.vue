@@ -14,7 +14,6 @@
 </template>
 
 <script>
-
 const nav = [
   { name: 'marketplace.selling', title: '在售' },
   { name: 'marketplace.siring', title: '配种' },
@@ -31,9 +30,6 @@ export default {
     }
   }
 }
-
-import SnakeList from './SnakeList';
-export { SnakeList };
 </script>
 
 <style scoped lang="scss">
