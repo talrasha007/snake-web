@@ -1,10 +1,12 @@
 import promisify from 'es6-promisify';
 import Web3 from 'web3';
+import { sleep } from './util';
 
 let web3, contract = {};
 
 if (window.web3) {
   web3 = new Web3(window.web3.currentProvider);
+  web3.eth.defaultAccount = web3.eth.accounts[0];
 
   web3.eth.getBalance = promisify(web3.eth.getBalance);
   web3.eth.getBlockNumber = promisify(web3.eth.getBlockNumber);
@@ -28,6 +30,13 @@ if (window.web3) {
     contract.saleAuction = loadContract(require('./contract/SaleClockAuction'), await kittyCore.saleAuction());
     contract.siringAuction = loadContract(require('./contract/SiringClockAuction'), await kittyCore.siringAuction());
   })();
+
+  contract.waitForTx = async txHash => {
+    const oldBlockNum = await web3.eth.getBlockNumber();
+    await web3.eth.getTransactionReceipt(txHash);
+    while (oldBlockNum === await web3.eth.getBlockNumber())
+      await sleep(100);
+  }
 } else {
   document.location.hash = '#/error';
 }
