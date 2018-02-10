@@ -26,7 +26,7 @@ if (window.web3) {
   }
 
   contract.waitForInit = (async function () {
-    const kittyCore = contract.kittyCore = loadContract(require('./contract/KittyCore.json'), '0x432bb747a1b50d5380c121f5e7f9cf47cd01adab');
+    const kittyCore = contract.kittyCore = loadContract(require('./contract/KittyCore.json'), process.env.SNAKE_CORE);
     contract.saleAuction = loadContract(require('./contract/SaleClockAuction'), await kittyCore.saleAuction());
     contract.siringAuction = loadContract(require('./contract/SiringClockAuction'), await kittyCore.siringAuction());
   })();
