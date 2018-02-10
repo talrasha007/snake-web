@@ -26,9 +26,9 @@ if (window.web3) {
   }
 
   contract.waitForInit = (async function () {
-    const kittyCore = contract.kittyCore = loadContract(require('./contract/KittyCore.json'), process.env.SNAKE_CORE);
-    contract.saleAuction = loadContract(require('./contract/SaleClockAuction'), await kittyCore.saleAuction());
-    contract.siringAuction = loadContract(require('./contract/SiringClockAuction'), await kittyCore.siringAuction());
+    const snakeCore = contract.snakeCore = loadContract(require('./contract/SnakeCore.json'), process.env.SNAKE_CORE);
+    contract.saleAuction = loadContract(require('./contract/SaleClockAuction.json'), await snakeCore.saleAuction());
+    contract.siringAuction = loadContract(require('./contract/SiringClockAuction.json'), await snakeCore.siringAuction());
   })();
 
   contract.waitForTx = async txHash => {

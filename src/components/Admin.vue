@@ -11,6 +11,13 @@
         <a class="button" v-on:click="() => op.ceo[ceoOp.type](ceoOp.address)">提交</a>
       </div>
 
+      <div v-if="eth.account === eth.cooAddress">
+        <h4>COO操作</h4>
+        <div>
+          <a class="button" v-on:click="op.coo.createGen0AuctionRandom">创建随机0代蛇</a>
+        </div>
+      </div>
+
       <div v-if="eth.account === eth.cfoAddress">
         <h4>CFO操作</h4>
       </div>
@@ -28,8 +35,11 @@ const eth = {
 
 const op = {
   ceo: {
-    setCFO: async addr => updateInfoAfterTx(await contract.kittyCore.setCFO(addr)),
-    setCOO: addr => contract.kittyCore.setCOO(addr)
+    setCFO: async addr => updateInfoAfterTx(await contract.snakeCore.setCFO(addr)),
+    setCOO: addr => contract.snakeCore.setCOO(addr)
+  },
+  coo: {
+    createGen0AuctionRandom: () => contract.snakeCore.createGen0AuctionRandom()
   }
 };
 
@@ -43,9 +53,9 @@ async function updateInfo() {
 
   Object.assign(eth, {
     account: web3.eth.accounts[0],
-    ceoAddress: await contract.kittyCore.ceoAddress(),
-    cooAddress: await contract.kittyCore.cooAddress(),
-    cfoAddress: await contract.kittyCore.cfoAddress()
+    ceoAddress: await contract.snakeCore.ceoAddress(),
+    cooAddress: await contract.snakeCore.cooAddress(),
+    cfoAddress: await contract.snakeCore.cfoAddress()
   });
 }
 

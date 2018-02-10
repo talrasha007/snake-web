@@ -1,23 +1,5 @@
 [
   {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "_kittyId",
-        "type": "uint256"
-      },
-      {
-        "name": "_recipient",
-        "type": "address"
-      }
-    ],
-    "name": "rescueLostKitty",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
     "constant": true,
     "inputs": [],
     "name": "cfoAddress",
@@ -120,6 +102,15 @@
     "type": "function"
   },
   {
+    "constant": false,
+    "inputs": [],
+    "name": "createGen0AuctionRandom",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "constant": true,
     "inputs": [],
     "name": "totalSupply",
@@ -127,6 +118,25 @@
       {
         "name": "",
         "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "snakeIndexToOwner",
+    "outputs": [
+      {
+        "name": "",
+        "type": "address"
       }
     ],
     "payable": false,
@@ -215,7 +225,7 @@
     "constant": false,
     "inputs": [
       {
-        "name": "_kittyId",
+        "name": "_snakeId",
         "type": "uint256"
       },
       {
@@ -326,29 +336,10 @@
     "type": "function"
   },
   {
-    "constant": true,
-    "inputs": [
-      {
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "kittyIndexToApproved",
-    "outputs": [
-      {
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "constant": false,
     "inputs": [
       {
-        "name": "_kittyId",
+        "name": "_snakeId",
         "type": "uint256"
       },
       {
@@ -420,15 +411,15 @@
     "constant": false,
     "inputs": [
       {
-        "name": "_genes",
+        "name": "_snakeId",
         "type": "uint256"
       },
       {
-        "name": "_owner",
+        "name": "_recipient",
         "type": "address"
       }
     ],
-    "name": "createPromoKitty",
+    "name": "rescueLostSnake",
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
@@ -626,25 +617,6 @@
     "type": "function"
   },
   {
-    "constant": true,
-    "inputs": [
-      {
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "kittyIndexToOwner",
-    "outputs": [
-      {
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "constant": false,
     "inputs": [
       {
@@ -657,6 +629,24 @@
       }
     ],
     "name": "transfer",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_genes",
+        "type": "uint256"
+      },
+      {
+        "name": "_owner",
+        "type": "address"
+      }
+    ],
+    "name": "createPromoSnake",
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
@@ -733,10 +723,24 @@
     "type": "function"
   },
   {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "randomAddr",
+        "type": "address"
+      }
+    ],
+    "name": "setRandom",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "constant": true,
     "inputs": [
       {
-        "name": "_kittyId",
+        "name": "_snakeId",
         "type": "uint256"
       }
     ],
@@ -753,8 +757,13 @@
   },
   {
     "constant": true,
-    "inputs": [],
-    "name": "saleAuction",
+    "inputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "snakeIndexToApproved",
     "outputs": [
       {
         "name": "",
@@ -767,53 +776,12 @@
   },
   {
     "constant": true,
-    "inputs": [
-      {
-        "name": "_id",
-        "type": "uint256"
-      }
-    ],
-    "name": "getKitty",
+    "inputs": [],
+    "name": "saleAuction",
     "outputs": [
       {
-        "name": "isGestating",
-        "type": "bool"
-      },
-      {
-        "name": "isReady",
-        "type": "bool"
-      },
-      {
-        "name": "cooldownIndex",
-        "type": "uint256"
-      },
-      {
-        "name": "nextActionAt",
-        "type": "uint256"
-      },
-      {
-        "name": "siringWithId",
-        "type": "uint256"
-      },
-      {
-        "name": "birthTime",
-        "type": "uint256"
-      },
-      {
-        "name": "matronId",
-        "type": "uint256"
-      },
-      {
-        "name": "sireId",
-        "type": "uint256"
-      },
-      {
-        "name": "generation",
-        "type": "uint256"
-      },
-      {
-        "name": "genes",
-        "type": "uint256"
+        "name": "",
+        "type": "address"
       }
     ],
     "payable": false,
@@ -896,6 +864,61 @@
     "outputs": [],
     "payable": true,
     "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "_id",
+        "type": "uint256"
+      }
+    ],
+    "name": "getSnake",
+    "outputs": [
+      {
+        "name": "isGestating",
+        "type": "bool"
+      },
+      {
+        "name": "isReady",
+        "type": "bool"
+      },
+      {
+        "name": "cooldownIndex",
+        "type": "uint256"
+      },
+      {
+        "name": "nextActionAt",
+        "type": "uint256"
+      },
+      {
+        "name": "siringWithId",
+        "type": "uint256"
+      },
+      {
+        "name": "birthTime",
+        "type": "uint256"
+      },
+      {
+        "name": "matronId",
+        "type": "uint256"
+      },
+      {
+        "name": "sireId",
+        "type": "uint256"
+      },
+      {
+        "name": "generation",
+        "type": "uint256"
+      },
+      {
+        "name": "genes",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -1002,7 +1025,7 @@
       },
       {
         "indexed": false,
-        "name": "kittyId",
+        "name": "snakeId",
         "type": "uint256"
       },
       {
