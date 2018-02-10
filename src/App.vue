@@ -1,13 +1,13 @@
 <template>
   <div id="app">
-    <ul class="top-nav">
+    <ul class="nav">
       <li class="brand">
-        <font-awesome-icon :icon="['fab', 'snapchat-ghost']" class="icon" />
+        <!--<font-awesome-icon :icon="['fab', 'snapchat-ghost']" class="icon" />-->
         加密贪吃蛇
       </li>
       <li class="placeholder"></li>
-      <li class="nav-item" v-for="item in nav1" :key="item.href" :class="{ active: '#' + $route.path === item.href }">
-        <a v-bind:href="item.href">{{item.title}}</a>
+      <li class="nav-item" v-for="item in nav1" :key="item.name || item.href" :class="{ active: $route.matched[0] && $route.matched[0].name === (item.match || item.name) }">
+        <router-link :to="{ name: item.name, path: item.href }">{{item.title}}</router-link>
       </li>
       <li class="placeholder"></li>
       <li class="nav-item" v-for="item in nav2" :key="item.href" :class="{ active: '#' + $route.path === item.href }">
@@ -22,9 +22,9 @@
 import FontAwesomeIcon from '@fortawesome/vue-fontawesome';
 
 const nav1 = [
-  { href: '#/my-snake', title: '我的' },
-  { href: '#/marketplace', title: '市场' },
-  { href: '#/activity', title: '历史' }
+  { name: 'mySnake', title: '我的' },
+  { name: 'marketplace.selling', match: 'marketplace', title: '市场' },
+  { href: '/activity', title: '历史' }
 ];
 
 const nav2 = [
@@ -50,7 +50,27 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.top-nav {
+</style>
+
+<style lang="scss">
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+#app {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2a2825;
+}
+
+.content {
+  margin: 10px 30px;
+}
+
+.nav {
   font-weight: bold;
   margin: 10px 30px;
   padding: 0;
@@ -86,28 +106,29 @@ export default {
       color: #2a2825;
       text-decoration: none;
     }
-  }
 
-  .nav-item.active {
-    a {
-      color: #ef52d1;
-      box-shadow: 0 0.1em 0 0 #ef52d1;
+    &.active {
+      a {
+        color: #ef52d1;
+        box-shadow: 0 0.1em 0 0 #ef52d1;
+      }
     }
   }
-}
-</style>
 
-<style lang="scss">
-html, body {
-  margin: 0;
-  padding: 0;
-}
+  &.sub {
+    border-bottom: 2px solid #f3f1ee;
 
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2a2825;
+    .nav-item {
+      a {
+        color: #9c9c9b;
+      }
+
+      &.active {
+        a {
+          color: #2a2825;
+        }
+      }
+    }
+  }
 }
 </style>
