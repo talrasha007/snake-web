@@ -30,6 +30,9 @@ export default {
     }
   }
 }
+
+import OnSale from './OnSale';
+export { OnSale };
 </script>
 
 <style scoped lang="scss">
