@@ -2,7 +2,7 @@
   <ul>
     <li v-for="(snake, idx) in snakes" :key="snake.id">
       <router-link :to="{ path: '' }">
-        <div class="snake-detail" :class="{ ['s' + idx % 5]: true }">
+        <div class="snake-detail" :class="{ ['s' + idx % 8]: true }">
           <div v-if="snake.currentPrice >= 0" class="snake-status">
             <font-awesome-icon class="icon" :icon="['fab', 'ethereum']" />
             <span class="price">&nbsp;{{snake.currentPrice | wei}}</span>
@@ -122,6 +122,18 @@ ul {
 
         &.s4 {
           background-color: #d3e8ff;
+        }
+
+        &.s5 {
+          background-color: #faf4cf;
+        }
+
+        &.s6 {
+          background-color: #d3e8ff;
+        }
+
+        &.s7 {
+          background-color: #efe1da;
         }
       }
 

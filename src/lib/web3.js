@@ -1,6 +1,7 @@
 import promisify from 'es6-promisify';
 import Web3 from 'web3';
 import { load } from './contract';
+import { sleep } from './util';
 
 let web3, contract = {};
 
@@ -15,6 +16,11 @@ if (window.web3) {
 
   contract.waitForInit = (async function () {
     Object.assign(contract, await load(web3));
+
+    while (!web3.eth.defaultAccount) {
+      await sleep(100);
+      web3.eth.defaultAccount = web3.eth.accounts[0];
+    }
   })();
 } else {
   document.location.hash = '#/error';
