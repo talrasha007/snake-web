@@ -87,6 +87,7 @@ export default {
 
     async bid() {
       await contract.waitForTx(await contract.saleAuction.bid(this.id, { value: this.sale.currentPrice }));
+      await this.refresh();
     }
   },
 
