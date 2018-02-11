@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Profile from '../components/Profile';
-import Snake from '../components/Snake';
+import Snake, { Info } from '../components/Snake';
 import Marketplace, { OnSale, Siring, All } from '../components/Marketplace';
 import Admin from '../components/Admin';
 
@@ -30,18 +30,23 @@ export default new Router({
     },
     {
       path: '/snake/:id',
-      name: 'snake',
-      component: Snake
+      component: Snake,
+      children: [
+        {
+          path: '',
+          name: 'snake',
+          component: Info
+        }
+      ]
     },
     {
       path: '/marketplace',
-      name: 'marketplace',
       component: Marketplace,
       children: [
         {
-          path: 'selling',
+          path: '',
           component: OnSale,
-          name: 'marketplace.selling'
+          name: 'marketplace'
         },
         {
           path: 'siring',

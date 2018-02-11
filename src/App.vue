@@ -6,7 +6,7 @@
         加密贪吃蛇
       </li>
       <li class="placeholder"></li>
-      <li class="nav-item" v-for="item in nav1" :key="item.name || item.href" :class="{ active: $route.matched[0] && $route.matched[0].name === (item.match || item.name) }">
+      <li class="nav-item" v-for="item in nav1" :key="item.name || item.href" :class="{ active: (item.match && item.match.test($route.name)) || $route.name ===  item.name }">
         <router-link :to="{ name: item.name, path: item.href }">{{item.title}}</router-link>
       </li>
       <li class="placeholder"></li>
@@ -23,7 +23,7 @@ import FontAwesomeIcon from '@fortawesome/vue-fontawesome';
 
 const nav1 = [
   { name: 'mySnake', title: '我的' },
-  { name: 'marketplace.selling', match: 'marketplace', title: '市场' },
+  { name: 'marketplace', match: /^marketplace.*$/, title: '市场' },
   { href: '/activity', title: '历史' }
 ];
 
