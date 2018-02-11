@@ -14,7 +14,7 @@
           <span>{{generation}}代</span>
           <span>{{cooldownIndex | cooldown}}</span>
         </div>
-        <div class="placeholder" />
+        <div class="placeholder"></div>
         <router-link v-if="owner" :to="{ name: 'profile', params: { account: owner } }" class="account">
           <div class="desc">
             <div>{{owner}}</div>
@@ -52,7 +52,7 @@
             {{sale.endingPrice | wei}}
           </div>
         </div>
-        <div class="placeholder" />
+        <div class="placeholder"></div>
         <div>
           <promise-button :click="() => bid()">购买</promise-button>
         </div>
@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import web3, { contract } from '../lib/web3';
+import { contract } from '../lib/web3';
 import FontAwesomeIcon from '@fortawesome/vue-fontawesome';
 import PromiseButton from './controls/PromiseButton';
 import { genes, wei, cooldown, duration } from './filters';
