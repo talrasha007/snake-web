@@ -20,7 +20,7 @@ export async function load(web3) {
 
   return {
     snakeCore,
-    saleAuction,
+    saleAuction: extendSaleAuction(snakeCore, saleAuction),
     siringAuction,
     async waitForTx(txHash) {
       const oldBlockNum = await web3.eth.getBlockNumber();
@@ -29,4 +29,34 @@ export async function load(web3) {
         await sleep(500);
     }
   };
+}
+
+function extendSaleAuction(snakeCore, saleAuction) {
+  return Object.assign(saleAuction, {
+    async listAll() {
+      const ret = [];
+      const total = await snakeCore.totalSupply();
+
+      for (let id = total.toNumber(); id > 0; id--) {
+        console.log(id);
+        try {
+          const [
+            seller,
+            startingPrice,
+            endingPrice,
+            duration,
+            startedAt
+          ] = (await saleAuction.getAuction(id)).map((v, i) => i > 0 ? v.toNumber() : v);
+
+          const currentPrice = (await saleAuction.getCurrentPrice(id)).toNumber();
+
+          ret.push({ id, seller, currentPrice, startingPrice, endingPrice, duration, startedAt });
+        } catch (e) {
+
+        }
+      }
+
+      return ret;
+    }
+  });
 }
