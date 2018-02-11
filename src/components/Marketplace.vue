@@ -22,7 +22,7 @@ const nav = [
 ];
 
 export default {
-  name: 'profile',
+  name: 'marketplace',
 
   data() {
     return {

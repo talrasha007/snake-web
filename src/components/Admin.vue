@@ -71,7 +71,7 @@ async function updateInfo() {
 updateInfo();
 
 export default {
-  name: 'Admin',
+  name: 'admin',
 
   data() {
     return {

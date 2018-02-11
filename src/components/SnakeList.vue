@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: 'SnakeList'
+  name: 'snake-list'
 }
 </script>
 
