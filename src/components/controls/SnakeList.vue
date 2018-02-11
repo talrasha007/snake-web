@@ -3,9 +3,9 @@
     <li v-for="(snake, idx) in snakes" :key="snake.id">
       <router-link :to="{ path: '' }">
         <div class="snake-detail" :class="{ ['s' + idx % 8]: true }">
-          <div v-if="snake.currentPrice >= 0" class="snake-status">
+          <div v-if="snake.sale" class="snake-status">
             <font-awesome-icon class="icon" :icon="['fab', 'ethereum']" />
-            <span class="price">&nbsp;{{snake.currentPrice | wei}}</span>
+            <span class="price">&nbsp;{{snake.sale.currentPrice | wei}}</span>
           </div>
           <div class="genes">{{snake.genes | genes}}</div>
         </div>

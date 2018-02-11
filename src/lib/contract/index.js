@@ -19,9 +19,9 @@ export async function load(web3) {
   const siringAuction = loadContract(web3, require('./SiringClockAuction.json'), await snakeCore.siringAuction());
 
   return {
-    snakeCore: extedSnakeCore(snakeCore),
-    saleAuction: extendAuction(snakeCore, saleAuction),
-    siringAuction: extendAuction(snakeCore, siringAuction),
+    snakeCore: extedSnakeCore(snakeCore, saleAuction, siringAuction),
+    saleAuction: extendAuction(snakeCore, saleAuction, 'sale'),
+    siringAuction: extendAuction(snakeCore, siringAuction, 'siring'),
     async waitForTx(txHash) {
       const oldBlockNum = await web3.eth.getBlockNumber();
       await web3.eth.getTransactionReceipt(txHash);
@@ -31,7 +31,7 @@ export async function load(web3) {
   };
 }
 
-function extedSnakeCore(snakeCore) {
+function extedSnakeCore(snakeCore, saleAuction, siringAuction) {
   return Object.assign(snakeCore, {
     async getSnakeInfo(id) {
       const attrs = await snakeCore.getSnake(id);
@@ -48,11 +48,24 @@ function extedSnakeCore(snakeCore) {
         generation: attrs[8].toNumber(),
         genes: attrs[9]
       };
+    },
+
+    async listAll() {
+      const ret = [];
+      const total = await snakeCore.totalSupply();
+
+      for (let id = total.toNumber(); id >= 0; id--) {
+        const sale = await saleAuction.getAuctionInfo(id);
+        const siring = await siringAuction.getAuctionInfo(id);
+        ret.push({ id, sale, siring });
+      }
+
+      return ret;
     }
   });
 }
 
-function extendAuction(snakeCore, auction) {
+function extendAuction(snakeCore, auction, name) {
   return Object.assign(auction, {
     async getAuctionInfo(id) {
       try {
@@ -66,7 +79,7 @@ function extendAuction(snakeCore, auction) {
 
         const currentPrice = (await auction.getCurrentPrice(id)).toNumber();
 
-        return { id, seller, currentPrice, startingPrice, endingPrice, duration, startedAt };
+        return { seller, currentPrice, startingPrice, endingPrice, duration, startedAt };
       } catch (e) {
 
       }
@@ -78,7 +91,7 @@ function extendAuction(snakeCore, auction) {
 
       for (let id = total.toNumber(); id > 0; id--) {
         const info = await auction.getAuctionInfo(id);
-        if (info) ret.push(info);
+        if (info) ret.push({ id, [name]: info });
       }
 
       return ret;

@@ -33,7 +33,8 @@ export default {
 
 import OnSale from './OnSale';
 import Siring from './Siring';
-export { OnSale, Siring };
+import All from './All';
+export { OnSale, Siring, All };
 </script>
 
 <style scoped lang="scss">
