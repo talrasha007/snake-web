@@ -26,46 +26,15 @@
         </router-link>
       </div>
 
-      <div class="bid-box" v-if="sale">
-        <div class="price">
-          <div>当前价</div>
-          <div>
-            <font-awesome-icon class="icon" :icon="['fab', 'ethereum']" />
-            {{sale.currentPrice | wei}}
-          </div>
-        </div>
-        <div>
-          <div>剩余时间</div>
-          <div>{{timeLeft | duration}}</div>
-        </div>
-        <div>
-          <div>起始价</div>
-          <div>
-            <font-awesome-icon class="icon" :icon="['fab', 'ethereum']" />
-            {{sale.startingPrice | wei}}
-          </div>
-        </div>
-        <div>
-          <div>结束价</div>
-          <div>
-            <font-awesome-icon class="icon" :icon="['fab', 'ethereum']" />
-            {{sale.endingPrice | wei}}
-          </div>
-        </div>
-        <div class="placeholder"></div>
-        <div>
-          <promise-button :click="() => bid()">购买</promise-button>
-        </div>
-      </div>
+      <router-view :data="{ sale }" :op="{ bid }" />
     </div>
   </div>
 </template>
 
 <script>
-import { contract } from '../lib/web3';
+import { contract } from '../../lib/web3';
 import FontAwesomeIcon from '@fortawesome/vue-fontawesome';
-import PromiseButton from './controls/PromiseButton';
-import { genes, wei, cooldown, duration } from './filters';
+import { genes, wei, cooldown } from '../filters';
 
 export default {
   name: 'snake',
@@ -91,12 +60,6 @@ export default {
     }
   },
 
-  computed: {
-    timeLeft() {
-      return this.sale && Math.max(0, this.sale.startedAt + this.sale.duration - Date.now() / 1000);
-    }
-  },
-
   data() {
     this.refresh();
 
@@ -112,14 +75,16 @@ export default {
   },
 
   filters: {
-    genes, wei, cooldown, duration
+    genes, wei, cooldown
   },
 
   components: {
-    FontAwesomeIcon,
-    PromiseButton
+    FontAwesomeIcon
   }
 }
+
+import Info from './Info';
+export { Info };
 </script>
 
 <style scoped lang="scss">
@@ -189,32 +154,6 @@ export default {
         border-bottom: 1px solid #f3f1ee;
       }
     }
-  }
-}
-
-.bid-box {
-  text-align: left;
-  margin-top: 30px;
-  display: flex;
-  flex-flow: row wrap;
-  align-items: center;
-  color: #82817d;
-
-  > div {
-    margin: 10px;
-    font-size: 1.6em;
-
-    div:first-child {
-      font-size: 0.7em;
-    }
-  }
-
-  .price {
-    color: #2a2825;
-  }
-
-  .button {
-    padding: 15px 30px;
   }
 }
 </style>
