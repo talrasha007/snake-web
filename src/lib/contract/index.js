@@ -77,7 +77,7 @@ function extendAuction(snakeCore, auction, name) {
           startedAt
         ] = (await auction.getAuction(id)).map((v, i) => i > 0 ? v.toNumber() : v);
 
-        const currentPrice = (await auction.getCurrentPrice(id)).toNumber();
+        const currentPrice = await auction.getCurrentPrice(id);
 
         return { seller, currentPrice, startingPrice, endingPrice, duration, startedAt };
       } catch (e) {
