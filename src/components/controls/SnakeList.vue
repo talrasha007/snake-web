@@ -75,6 +75,7 @@ ul {
       cursor: pointer;
       text-decoration: none;
       display: block;
+      margin: 25px 0;
 
       .snake-detail {
         position: relative;
