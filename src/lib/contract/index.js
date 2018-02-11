@@ -19,7 +19,7 @@ export async function load(web3) {
   const siringAuction = loadContract(web3, require('./SiringClockAuction.json'), await snakeCore.siringAuction());
 
   return {
-    snakeCore,
+    snakeCore: extedSnakeCore(snakeCore),
     saleAuction: extendSaleAuction(snakeCore, saleAuction),
     siringAuction,
     async waitForTx(txHash) {
@@ -29,6 +29,27 @@ export async function load(web3) {
         await sleep(500);
     }
   };
+}
+
+function extedSnakeCore(snakeCore) {
+  return Object.assign(snakeCore, {
+    async getSnakeInfo(id) {
+      const attrs = await snakeCore.getSnake(id);
+
+      return {
+        isGestating: attrs[0],
+        isReady: attrs[1],
+        cooldownIndex: attrs[2].toNumber(),
+        nextActionAt: attrs[3].toNumber(),
+        siringWithId: attrs[4].toNumber(),
+        birthTime: attrs[5].toNumber(),
+        matronId: attrs[6].toNumber(),
+        sireId: attrs[7].toNumber(),
+        generation: attrs[8].toNumber(),
+        genes: attrs[9]
+      };
+    }
+  });
 }
 
 function extendSaleAuction(snakeCore, saleAuction) {

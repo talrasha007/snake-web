@@ -7,10 +7,12 @@
             <font-awesome-icon class="icon" :icon="['fab', 'ethereum']" />
             <span class="price">&nbsp;{{snake.currentPrice | wei}}</span>
           </div>
-
+          <div class="genes">{{snake.genes | genes}}</div>
         </div>
-        <div>
+        <div class="snake-meta">
           <span class="snake-id">#{{snake.id}}</span>
+          <span>{{snake.generation}}代</span>
+          <span>{{snake.cooldownIndex | cooldown}}</span>
         </div>
       </router-link>
     </li>
@@ -18,20 +20,39 @@
 </template>
 
 <script>
-import web3 from '../../lib/web3';
+import { contract } from '../../lib/web3';
 import FontAwesomeIcon from '@fortawesome/vue-fontawesome';
-
+import { wei, cooldown, genes } from '../filters';
 
 export default {
   name: 'snake-list',
   props: ['snakes'],
-  filters: {
-    wei(v) {
-      return v >= 0 && Math.floor(web3.fromWei(v) * Math.pow(10, 5)) / Math.pow(10, 5);
-    }
-  },
   components: {
     FontAwesomeIcon
+  },
+  watch: {
+    async snakes(arr) {
+      let updated = false;
+      for (const snake of arr) {
+        if (!snake.genes) {
+          Object.assign(
+            snake,
+            await contract.snakeCore.getSnakeInfo(snake.id)
+          );
+
+          updated = true;
+        }
+      }
+
+      if (updated) {
+        arr.push(arr.pop());
+      }
+    }
+  },
+  filters: {
+    wei,
+    cooldown,
+    genes
   }
 }
 </script>
@@ -53,12 +74,13 @@ ul {
     a {
       cursor: pointer;
       text-decoration: none;
+      display: block;
 
       .snake-detail {
         position: relative;
         width: 280px;
         height: 280px;
-        margin: 10px;
+        margin: 10px auto;
         border-radius: 5px;
 
         .snake-status {
@@ -72,8 +94,14 @@ ul {
           color: #0b0b0b;
 
           .price {
-            color: #7c7c7b;
+            color: #82817d;
           }
+        }
+
+        .genes {
+          color: #82817d;
+          padding: 120px 40px;
+          word-break: break-all;
         }
 
         &.s0 {
@@ -97,8 +125,12 @@ ul {
         }
       }
 
-      .snake-id {
-        color: #2a2825;
+      .snake-meta {
+        color: #82817d;
+
+        .snake-id {
+          color: #2a2825;
+        }
       }
     }
   }
