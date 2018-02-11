@@ -38,6 +38,8 @@ export default {
   padding: 10px;
   color: white;
   background-color: #fba371;
+  box-shadow: inset 0 0 0 .3rem #ff844b;
+  border: .2rem solid #0b0b0b;
   font-size: 0.8em;
 
   &.disabled {

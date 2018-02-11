@@ -28,3 +28,15 @@ export function wei(v) {
 export function genes(g) {
   return g && g.toString(16);
 }
+
+export function duration(v) {
+  if (v < 60) {
+    return v + '秒';
+  } else if (v < 3600) {
+    return Math.round(v / 60) + '分钟';
+  } else if (v < 3600 * 72) {
+    return Math.round(v / 3600) + '小时';
+  } else if (v >= 3600 * 72) {
+    return Math.round(v / 3600 / 24) + '天';
+  }
+}

@@ -102,6 +102,10 @@ html, body {
   background-color: #efe1da;
 }
 
+.placeholder {
+  flex-grow: 1;
+}
+
 .nav {
   font-weight: bold;
   margin: 10px 30px;
@@ -122,10 +126,6 @@ html, body {
       height: 45px;
       margin-right: 10px;
     }
-  }
-
-  .placeholder {
-    flex-grow: 1;
   }
 
   .nav-item {
