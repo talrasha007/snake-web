@@ -20,8 +20,8 @@ export async function load(web3) {
 
   return {
     snakeCore: extedSnakeCore(snakeCore),
-    saleAuction: extendSaleAuction(snakeCore, saleAuction),
-    siringAuction,
+    saleAuction: extendAuction(snakeCore, saleAuction),
+    siringAuction: extendAuction(snakeCore, siringAuction),
     async waitForTx(txHash) {
       const oldBlockNum = await web3.eth.getBlockNumber();
       await web3.eth.getTransactionReceipt(txHash);
@@ -52,28 +52,33 @@ function extedSnakeCore(snakeCore) {
   });
 }
 
-function extendSaleAuction(snakeCore, saleAuction) {
-  return Object.assign(saleAuction, {
+function extendAuction(snakeCore, auction) {
+  return Object.assign(auction, {
+    async getAuctionInfo(id) {
+      try {
+        const [
+          seller,
+          startingPrice,
+          endingPrice,
+          duration,
+          startedAt
+        ] = (await auction.getAuction(id)).map((v, i) => i > 0 ? v.toNumber() : v);
+
+        const currentPrice = (await auction.getCurrentPrice(id)).toNumber();
+
+        return { id, seller, currentPrice, startingPrice, endingPrice, duration, startedAt };
+      } catch (e) {
+
+      }
+    },
+
     async listAll() {
       const ret = [];
       const total = await snakeCore.totalSupply();
 
       for (let id = total.toNumber(); id > 0; id--) {
-        try {
-          const [
-            seller,
-            startingPrice,
-            endingPrice,
-            duration,
-            startedAt
-          ] = (await saleAuction.getAuction(id)).map((v, i) => i > 0 ? v.toNumber() : v);
-
-          const currentPrice = (await saleAuction.getCurrentPrice(id)).toNumber();
-
-          ret.push({ id, seller, currentPrice, startingPrice, endingPrice, duration, startedAt });
-        } catch (e) {
-
-        }
+        const info = await auction.getAuctionInfo(id);
+        if (info) ret.push(info);
       }
 
       return ret;

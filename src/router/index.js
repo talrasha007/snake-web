@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Profile from '../components/Profile';
-import Marketplace, { OnSale } from '../components/Marketplace';
+import Marketplace, { OnSale, Siring } from '../components/Marketplace';
 import Admin from '../components/Admin';
 
 Vue.use(Router);
@@ -34,7 +34,7 @@ export default new Router({
         },
         {
           path: 'siring',
-          component: OnSale,
+          component: Siring,
           name: 'marketplace.siring'
         },
         {
