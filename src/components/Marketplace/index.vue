@@ -17,7 +17,7 @@
 const nav = [
   { name: 'marketplace.selling', title: '在售' },
   { name: 'marketplace.siring', title: '配种' },
-  { name: 'marketplace.gen0', title: '0代' },
+  // { name: 'marketplace.gen0', title: '0代' },
   { name: 'marketplace.all', title: '全部' }
 ];
 

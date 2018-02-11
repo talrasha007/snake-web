@@ -37,11 +37,10 @@ export default new Router({
           component: Siring,
           name: 'marketplace.siring'
         },
-        {
-          path: 'gen0',
-          component: OnSale,
-          name: 'marketplace.gen0'
-        },
+        // {
+        //   path: 'gen0',
+        //   name: 'marketplace.gen0'
+        // },
         {
           path: 'all',
           component: All,

@@ -104,38 +104,6 @@ ul {
           padding: 120px 40px;
           word-break: break-all;
         }
-
-        &.s0 {
-          background-color: #d1eeeb;
-        }
-
-        &.s1 {
-          background-color: #fde9e4;
-        }
-
-        &.s2 {
-          background-color: #dfdffa;
-        }
-
-        &.s3 {
-          background-color: #cdf5d4;
-        }
-
-        &.s4 {
-          background-color: #d3e8ff;
-        }
-
-        &.s5 {
-          background-color: #faf4cf;
-        }
-
-        &.s6 {
-          background-color: #d3e8ff;
-        }
-
-        &.s7 {
-          background-color: #efe1da;
-        }
       }
 
       .snake-meta {
