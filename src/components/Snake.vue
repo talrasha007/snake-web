@@ -54,7 +54,7 @@
         </div>
         <div class="placeholder" />
         <div>
-          <promise-button :click="() => {}">购买</promise-button>
+          <promise-button :click="() => bid()">购买</promise-button>
         </div>
       </div>
     </div>
@@ -83,6 +83,10 @@ export default {
           owner: await contract.snakeCore.snakeIndexToOwner(id)
         }
       );
+    },
+
+    async bid() {
+      await contract.waitForTx(await contract.saleAuction.bid(this.id, { value: this.sale.currentPrice }));
     }
   },
 

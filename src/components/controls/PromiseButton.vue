@@ -43,6 +43,8 @@ export default {
   font-size: 0.8em;
 
   &.disabled {
+    box-shadow: inset 0 0 0 .3rem #eee;
+    border: .2rem solid #aaa;
     background-color: #ddd;
   }
 }
