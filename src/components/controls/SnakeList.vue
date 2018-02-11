@@ -1,8 +1,8 @@
 <template>
   <ul>
-    <li v-for="(snake, idx) in snakes" :key="snake.id">
-      <router-link :to="{ path: '' }">
-        <div class="snake-detail" :class="{ ['s' + idx % 8]: true }">
+    <li v-for="snake in snakes" :key="snake.id">
+      <router-link :to="{ name: 'snake', params: { id: snake.id } }">
+        <div class="snake-detail" :class="{ ['s' + snake.id % 8]: true }">
           <div v-if="snake.sale" class="snake-status">
             <font-awesome-icon class="icon" :icon="['fab', 'ethereum']" />
             <span class="price">&nbsp;{{snake.sale.currentPrice | wei}}</span>
