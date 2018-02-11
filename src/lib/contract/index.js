@@ -38,7 +38,6 @@ function extendSaleAuction(snakeCore, saleAuction) {
       const total = await snakeCore.totalSupply();
 
       for (let id = total.toNumber(); id > 0; id--) {
-        console.log(id);
         try {
           const [
             seller,
