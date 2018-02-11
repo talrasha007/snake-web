@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Profile from '../components/Profile';
-import Snake, { Info } from '../components/Snake';
+import Snake, { Info, Auction } from '../components/Snake';
 import Marketplace, { OnSale, Siring, All } from '../components/Marketplace';
 import Admin from '../components/Admin';
 
@@ -36,6 +36,16 @@ export default new Router({
           path: '',
           name: 'snake',
           component: Info
+        },
+        {
+          path: 'sell',
+          name: 'snake.sell',
+          component: Auction
+        },
+        {
+          path: 'sire',
+          name: 'snake.sire',
+          component: Auction
         }
       ]
     },

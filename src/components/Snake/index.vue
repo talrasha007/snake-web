@@ -26,7 +26,14 @@
         </router-link>
       </div>
 
-      <router-view :data="{ sale }" :op="{ bid }" />
+      <ul class="sub nav">
+        <li class="placeholder"></li>
+        <li class="nav-item" v-for="item in nav" :key="item.name" :class="{ active: $route.name === item.name }">
+          <router-link :to="{ name: item.name }">{{item.title}}</router-link>
+        </li>
+      </ul>
+
+      <router-view :data="{ sale }" :op="{ bid, sell, sire }" />
     </div>
   </div>
 </template>
@@ -35,6 +42,12 @@
 import { contract } from '../../lib/web3';
 import FontAwesomeIcon from '@fortawesome/vue-fontawesome';
 import { genes, wei, cooldown } from '../filters';
+
+const nav = [
+  { name: 'snake.sell', title: '出售' },
+  { name: 'snake.sire', title: '配种' },
+  { name: 'snake.breed', title: '交配' }
+];
 
 export default {
   name: 'snake',
@@ -57,6 +70,22 @@ export default {
     async bid() {
       await contract.waitForTx(await contract.saleAuction.bid(this.id, { value: this.sale.currentPrice }));
       await this.refresh();
+    },
+
+    async sell(startingPrice, endingPrice, duration) {
+      startingPrice = web3.toWei(startingPrice);
+      endingPrice = web3.toWei(endingPrice);
+      duration = duration * 3600 * 24;
+      await contract.waitForTx(await contract.snakeCore.createSaleAuction(this.id, startingPrice, endingPrice, duration));
+      await this.refresh();
+    },
+
+    async sire(startingPrice, endingPrice, duration) {
+      startingPrice = web3.toWei(startingPrice);
+      endingPrice = web3.toWei(endingPrice);
+      duration = duration * 3600 * 24;
+      await contract.waitForTx(await contract.snakeCore.createSiringAuction(this.id, startingPrice, endingPrice, duration));
+      await this.refresh();
     }
   },
 
@@ -64,6 +93,7 @@ export default {
     this.refresh();
 
     return {
+      nav,
       id: this.$route.params.id,
       genes: null,
       sale: null,
@@ -84,7 +114,8 @@ export default {
 }
 
 import Info from './Info';
-export { Info };
+import Auction from './Auction';
+export { Info, Auction };
 </script>
 
 <style scoped lang="scss">
