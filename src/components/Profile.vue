@@ -47,6 +47,12 @@ export default {
     }
   },
 
+  watch: {
+    $route() {
+      this.refresh();
+    }
+  },
+
   components: {
     FontAwesomeIcon,
     SnakeList
