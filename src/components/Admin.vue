@@ -8,13 +8,13 @@
           <option value="setCOO">setCOO</option>
         </select>
         <input type="text" v-model="ceoOp.address" placeholder="address" size="50" />
-        <a class="button" v-on:click="() => op.ceo[ceoOp.type](ceoOp.address)">提交</a>
+        <promise-button :click="() => op.ceo[ceoOp.type](ceoOp.address)">提交</promise-button>
       </div>
 
       <div v-if="eth.account === eth.cooAddress">
         <h4>COO操作</h4>
         <div>
-          <a class="button" v-on:click="op.coo.createGen0AuctionRandom">创建随机0代蛇</a>
+          <promise-button class="button" :click="op.coo.createGen0AuctionRandom">创建随机0代蛇</promise-button>
         </div>
       </div>
 
@@ -27,6 +27,7 @@
 
 <script>
 import web3, { contract } from '../lib/web3';
+import PromiseButton from './controls/PromiseButton';
 
 const eth = {
   account: web3.eth.accounts[0],
@@ -73,6 +74,10 @@ export default {
         type: 'setCFO'
       }
     };
+  },
+
+  components: {
+    PromiseButton
   }
 }
 </script>
@@ -85,13 +90,6 @@ form {
   input, select, button {
     padding: 10px;
     border: 1px solid #f3f1ee;
-  }
-
-  .button {
-    padding: 10px;
-    color: white;
-    background-color: #fba371;
-    font-size: 0.8em;
   }
 
   select {
