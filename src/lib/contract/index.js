@@ -50,6 +50,20 @@ function extedSnakeCore(snakeCore, saleAuction, siringAuction) {
       };
     },
 
+    async listByUser(owner) {
+      const ret = [];
+      const total = await snakeCore.balanceOf(owner);
+
+      for (let idx = total.toNumber() - 1; idx >= 0; idx--) {
+        const id = await snakeCore.tokensOfOwnerByIndex(owner, idx);
+        const sale = await saleAuction.getAuctionInfo(id);
+        const siring = await siringAuction.getAuctionInfo(id);
+        ret.push({ id: id.toNumber(), sale, siring });
+      }
+
+      return ret;
+    },
+
     async listAll() {
       const ret = [];
       const total = await snakeCore.totalSupply();

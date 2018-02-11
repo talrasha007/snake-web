@@ -15,7 +15,7 @@
           <span>{{cooldownIndex | cooldown}}</span>
         </div>
         <div class="placeholder" />
-        <div class="account">
+        <router-link v-if="owner" :to="{ name: 'profile', params: { account: owner } }" class="account">
           <div class="desc">
             <div>{{owner}}</div>
             <h4>主人</h4>
@@ -23,7 +23,7 @@
           <div>
             <font-awesome-icon :icon="['fab', 'ethereum']" class="icon" />
           </div>
-        </div>
+        </router-link>
       </div>
 
       <div class="bid-box" v-if="sale">
@@ -170,6 +170,8 @@ export default {
     flex-flow: row;
     align-items: center;
     text-align: right;
+    text-decoration: none;
+    color: #2a2825;
 
     .icon {
       width: 60px;

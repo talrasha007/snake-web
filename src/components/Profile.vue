@@ -13,24 +13,43 @@
     <ul class="sub nav">
       <li class="nav-item active"><a>所有</a></li>
     </ul>
+
+    <snake-list :snakes="snakes" />
   </div>
 </template>
 
 <script>
-import web3 from '../lib/web3';
+import web3, { contract } from '../lib/web3';
+import SnakeList from './controls/SnakeList';
 import FontAwesomeIcon from '@fortawesome/vue-fontawesome';
 
 export default {
   name: 'profile',
 
   data() {
+    this.refresh();
+
     return {
-      account: web3.eth.accounts[0]
+      account: this.$route.params.account || web3.eth.accounts[0],
+      snakes: []
+    };
+  },
+
+  methods: {
+    async refresh() {
+      await contract.waitForInit;
+
+      const account = this.$route.params.account || web3.eth.accounts[0];
+      Object.assign(this, {
+        account,
+        snakes: await contract.snakeCore.listByUser(account)
+      });
     }
   },
 
   components: {
-    FontAwesomeIcon
+    FontAwesomeIcon,
+    SnakeList
   }
 }
 </script>

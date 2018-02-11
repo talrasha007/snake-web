@@ -24,6 +24,11 @@ export default new Router({
       component: Profile
     },
     {
+      path: '/profile/:account',
+      name: 'profile',
+      component: Profile
+    },
+    {
       path: '/snake/:id',
       name: 'snake',
       component: Snake
