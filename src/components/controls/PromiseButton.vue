@@ -1,5 +1,5 @@
 <template>
-  <a class="button" :class="{ disabled }" v-on:click="() => onClick(click)">
+  <a class="button" :class="{ disabled: isDisabled || disabled }" v-on:click="() => onClick(click)">
     <slot />
   </a>
 </template>
@@ -9,21 +9,23 @@ export default {
   name: 'promise-button',
 
   props: {
-    click: Function
+    click: Function,
+    disabled: Boolean
   },
 
   data() {
+    const self = this;
     return {
-      disabled: false,
+      isDisabled: false,
       onClick: async (fn) => {
-        if (!this.disabled) {
-          this.disabled = true;
+        if (!this.isDisabled && !self.$props.disabled) {
+          this.isDisabled = true;
           try {
             await fn();
           } catch (e) {
             console.log(e);
           }
-          this.disabled = false;
+          this.isDisabled = false;
         }
       }
     };

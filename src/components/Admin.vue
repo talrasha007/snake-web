@@ -3,6 +3,7 @@
     <form action="javascript:void(0)">
       <div v-if="eth.account === eth.ceoAddress">
         <h4>CEO操作</h4>
+        <promise-button v-if="eth.isPaused !== null" :click="() => op.ceo.setPaused(!eth.isPaused)">{{eth.isPaused ? '恢复' : '暂停'}}</promise-button>
         <select v-model="ceoOp.type" title="OP">
           <option value="setCFO">setCFO</option>
           <option value="setCOO">setCOO</option>
@@ -14,7 +15,7 @@
       <div v-if="eth.account === eth.cooAddress">
         <h4>COO操作</h4>
         <div>
-          <promise-button class="button" :click="op.coo.createGen0AuctionRandom">创建随机0代蛇</promise-button>
+          <promise-button class="button" :disabled="eth.isPaused" :click="op.coo.createGen0AuctionRandom">创建随机0代蛇</promise-button>
         </div>
       </div>
 
@@ -30,14 +31,20 @@ import web3, { contract } from '../lib/web3';
 import PromiseButton from './controls/PromiseButton';
 
 const eth = {
+  isPaused: null,
   account: web3.eth.accounts[0],
   ceoAddress: '', cooAddress: '', cfoAddress: ''
 };
 
 const op = {
   ceo: {
-    setCFO: async addr => updateInfoAfterTx(await contract.snakeCore.setCFO(addr)),
-    setCOO: addr => contract.snakeCore.setCOO(addr)
+    setCFO: async addr => await updateInfoAfterTx(await contract.snakeCore.setCFO(addr)),
+    setCOO: async addr => await updateInfoAfterTx(await contract.snakeCore.setCOO(addr)),
+    setPaused: async paused => {
+      await updateInfoAfterTx(
+        paused ? await contract.snakeCore.pause() : await contract.snakeCore.unpause()
+      );
+    }
   },
   coo: {
     createGen0AuctionRandom: () => contract.snakeCore.createGen0AuctionRandom()
@@ -54,6 +61,7 @@ async function updateInfo() {
 
   Object.assign(eth, {
     account: web3.eth.accounts[0],
+    isPaused: await contract.snakeCore.paused(),
     ceoAddress: await contract.snakeCore.ceoAddress(),
     cooAddress: await contract.snakeCore.cooAddress(),
     cfoAddress: await contract.snakeCore.cfoAddress()
