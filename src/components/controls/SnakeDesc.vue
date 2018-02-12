@@ -9,6 +9,10 @@
         <font-awesome-icon class="icon" :icon="['fas', 'transgender-alt']" />
         <span class="price">&nbsp;{{snake.siring.currentPrice | wei}}</span>
       </div>
+      <div v-if="snake.siringWithId" class="snake-status">
+        <font-awesome-icon class="icon" :icon="['fas', 'venus-double']" />
+        <span class="price">{{snake.nextActionAt - Date.now() / 1000 | duration}}</span>
+      </div>
       <div class="genes">{{snake.genes | genes}}</div>
     </div>
     <div class="snake-meta">
@@ -22,7 +26,7 @@
 <script>
 import FontAwesomeIcon from '@fortawesome/vue-fontawesome';
 import { contract } from '../../lib/web3';
-import { wei, cooldown, genes } from '../filters';
+import { wei, cooldown, genes, duration } from '../filters';
 
 export default {
   name: 'snake-desc',
@@ -39,7 +43,7 @@ export default {
   },
 
   filters: {
-    wei, cooldown, genes
+    wei, cooldown, genes, duration
   },
 
   components: {

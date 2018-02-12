@@ -11,6 +11,10 @@
         <font-awesome-icon class="icon" :icon="['fas', 'transgender-alt']" />
         <span class="price">&nbsp;{{siring.currentPrice | wei}}</span>
       </div>
+      <div v-if="siringWithId" class="snake-status">
+        <font-awesome-icon class="icon" :icon="['fas', 'venus-double']" />
+        <span class="price">{{nextActionAt - Date.now() / 1000 | duration}}</span>
+      </div>
       <span class="genes">{{genes | genes}}</span>
     </div>
     <div class="content">
@@ -32,7 +36,7 @@
         </router-link>
       </div>
 
-      <ul class="sub nav" v-if="me === owner && !sale && !siring">
+      <ul class="sub nav" v-if="me === owner && !sale && !siring && !siringWithId">
         <li class="placeholder"></li>
         <li class="nav-item" v-for="item in nav" :key="item.name" :class="{ active: $route.name === item.name }">
           <router-link :to="{ name: item.name }">{{item.title}}</router-link>
@@ -47,7 +51,7 @@
 <script>
 import web3, { contract } from '../../lib/web3';
 import FontAwesomeIcon from '@fortawesome/vue-fontawesome';
-import { genes, wei, cooldown } from '../filters';
+import { genes, wei, cooldown, duration } from '../filters';
 
 const nav = [
   { name: 'snake.sell', title: '出售' },
@@ -90,12 +94,13 @@ export default {
       siring: null,
       generation: null,
       cooldownIndex: null,
+      siringWithId: null,
       owner: null
     };
   },
 
   filters: {
-    genes, wei, cooldown
+    genes, wei, cooldown, duration
   },
 
   components: {
