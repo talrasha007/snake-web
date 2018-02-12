@@ -25,7 +25,7 @@ export async function load(web3) {
     async waitForTx(txHash) {
       const oldBlockNum = await web3.eth.getBlockNumber();
       await web3.eth.getTransactionReceipt(txHash);
-      while (oldBlockNum === await web3.eth.getBlockNumber())
+      for (let i = 0; i < 20 && oldBlockNum === await web3.eth.getBlockNumber(); i++)
         await sleep(500);
     }
   };
