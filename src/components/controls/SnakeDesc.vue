@@ -13,20 +13,29 @@
     </div>
     <div class="snake-meta">
       <span class="snake-id">#{{snake.id}}</span>
-      <span>{{snake.generation}}代</span>
-      <span>{{snake.cooldownIndex | cooldown}}</span>
+      <span v-if="snake.generation">{{snake.generation}}代</span>
+      <span v-if="snake.cooldownIndex">{{snake.cooldownIndex | cooldown}}</span>
     </div>
   </div>
 </template>
 
 <script>
 import FontAwesomeIcon from '@fortawesome/vue-fontawesome';
+import { contract } from '../../lib/web3';
 import { wei, cooldown, genes } from '../filters';
 
 export default {
   name: 'snake-desc',
 
   props: ['snake'],
+
+  async beforeMount() {
+    const snake = this.$props.snake;
+
+    if (!snake.genes && snake.id >= 0) {
+      Object.assign(snake, await contract.snakeCore.getSnakeInfo(snake.id));
+    }
+  },
 
   filters: {
     wei, cooldown, genes

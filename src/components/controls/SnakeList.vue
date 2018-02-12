@@ -2,57 +2,26 @@
   <ul>
     <li v-for="snake in snakes" :key="snake.id">
       <router-link :to="{ name: 'snake', params: { id: snake.id } }">
-        <div class="snake-detail" :class="{ ['s' + snake.id % 8]: true }">
-          <div v-if="snake.sale" class="snake-status">
-            <font-awesome-icon class="icon" :icon="['fab', 'ethereum']" />
-            <span class="price">&nbsp;{{snake.sale.currentPrice | wei}}</span>
-          </div>
-          <div v-if="snake.siring" class="snake-status">
-            <font-awesome-icon class="icon" :icon="['fas', 'transgender-alt']" />
-            <span class="price">&nbsp;{{snake.siring.currentPrice | wei}}</span>
-          </div>
-          <div class="genes">{{snake.genes | genes}}</div>
-        </div>
-        <div class="snake-meta">
-          <span class="snake-id">#{{snake.id}}</span>
-          <span>{{snake.generation}}代</span>
-          <span>{{snake.cooldownIndex | cooldown}}</span>
-        </div>
+        <snake-desc :snake="snake" />
       </router-link>
     </li>
   </ul>
 </template>
 
 <script>
-import { contract } from '../../lib/web3';
-import FontAwesomeIcon from '@fortawesome/vue-fontawesome';
 import { wei, cooldown, genes } from '../filters';
+import FontAwesomeIcon from '@fortawesome/vue-fontawesome';
+import SnakeDesc from './SnakeDesc';
 
 export default {
   name: 'snake-list',
   props: ['snakes'],
+
   components: {
-    FontAwesomeIcon
+    FontAwesomeIcon,
+    SnakeDesc
   },
-  watch: {
-    async snakes(arr) {
-      let updated = false;
-      for (const snake of arr) {
-        if (!snake.genes) {
-          Object.assign(
-            snake,
-            await contract.snakeCore.getSnakeInfo(snake.id)
-          );
 
-          updated = true;
-        }
-      }
-
-      if (updated) {
-        arr.push(arr.pop());
-      }
-    }
-  },
   filters: {
     wei,
     cooldown,
@@ -80,43 +49,6 @@ ul {
       text-decoration: none;
       display: inline-block;
       margin: 25px 0;
-
-      .snake-detail {
-        position: relative;
-        width: 280px;
-        height: 280px;
-        margin: 10px auto;
-        border-radius: 5px;
-
-        .snake-status {
-          border-radius: 10px;
-          background-color: rgba(255, 255, 255, 0.5);
-          position: absolute;
-          top: 16px;
-          left: 50%;
-          padding: 5px 15px;
-          transform: translate(-50%, 0);
-          color: #0b0b0b;
-
-          .price {
-            color: #82817d;
-          }
-        }
-
-        .genes {
-          color: #82817d;
-          padding: 120px 40px;
-          word-break: break-all;
-        }
-      }
-
-      .snake-meta {
-        color: #82817d;
-
-        .snake-id {
-          color: #2a2825;
-        }
-      }
     }
   }
 }

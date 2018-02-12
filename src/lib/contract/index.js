@@ -1,6 +1,22 @@
 import promisify from "es6-promisify";
 import { sleep } from "../util";
 
+function getSnake(data) {
+  return Object.assign({
+    id: null,
+    isGestating: null,
+    isReady: null,
+    cooldownIndex: null,
+    nextActionAt: null,
+    siringWithId: null,
+    birthTime: null,
+    matronId: null,
+    sireId: null,
+    generation: null,
+    genes: null
+  }, data);
+}
+
 function loadContract(web3, abi, address) {
   const instance = web3.eth.contract(abi).at(address);
 
@@ -56,7 +72,7 @@ function extedSnakeCore(snakeCore, saleAuction, siringAuction) {
 
       for (let idx = total.toNumber() - 1; idx >= 0; idx--) {
         const id = await snakeCore.tokensOfOwnerByIndex(owner, idx);
-        ret.push({ id: id.toNumber() });
+        ret.push(getSnake({ id: id.toNumber() }));
       }
 
       return ret;
@@ -69,7 +85,7 @@ function extedSnakeCore(snakeCore, saleAuction, siringAuction) {
       for (let id = total.toNumber(); id >= 0; id--) {
         const sale = await saleAuction.getAuctionInfo(id);
         const siring = await siringAuction.getAuctionInfo(id);
-        ret.push({ id, sale, siring });
+        ret.push(getSnake({ id, sale, siring }));
       }
 
       return ret;
@@ -103,7 +119,7 @@ function extendAuction(snakeCore, auction, name) {
 
       for (let id = total.toNumber(); id > 0; id--) {
         const info = await auction.getAuctionInfo(id);
-        if (info && (!uid || info.seller === uid)) ret.push({ id, [name]: info });
+        if (info && (!uid || info.seller === uid)) ret.push(getSnake({ id, [name]: info }));
       }
 
       return ret;
