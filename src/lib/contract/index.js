@@ -56,9 +56,7 @@ function extedSnakeCore(snakeCore, saleAuction, siringAuction) {
 
       for (let idx = total.toNumber() - 1; idx >= 0; idx--) {
         const id = await snakeCore.tokensOfOwnerByIndex(owner, idx);
-        const sale = await saleAuction.getAuctionInfo(id);
-        const siring = await siringAuction.getAuctionInfo(id);
-        ret.push({ id: id.toNumber(), sale, siring });
+        ret.push({ id: id.toNumber() });
       }
 
       return ret;
@@ -99,13 +97,13 @@ function extendAuction(snakeCore, auction, name) {
       }
     },
 
-    async listAll() {
+    async listAll(uid) {
       const ret = [];
       const total = await snakeCore.totalSupply();
 
       for (let id = total.toNumber(); id > 0; id--) {
         const info = await auction.getAuctionInfo(id);
-        if (info) ret.push({ id, [name]: info });
+        if (info && (!uid || info.seller === uid)) ret.push({ id, [name]: info });
       }
 
       return ret;

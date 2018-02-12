@@ -42,7 +42,11 @@ export default {
       const account = this.$route.params.account || web3.eth.accounts[0];
       Object.assign(this, {
         account,
-        snakes: await contract.snakeCore.listByUser(account)
+        snakes: Array.concat(
+          await contract.snakeCore.listByUser(account),
+          await contract.saleAuction.listAll(account),
+          await contract.siringAuction.listAll(account)
+        )
       });
     }
   },
