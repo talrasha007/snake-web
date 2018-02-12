@@ -33,7 +33,7 @@ export function duration(v) {
   if (v <= 0) {
     return '待产';
   } if (v < 60) {
-    return v + '秒';
+    return Math.round(v) + '秒';
   } else if (v < 3600) {
     return Math.round(v / 60) + '分钟';
   } else if (v < 3600 * 72) {

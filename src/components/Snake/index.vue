@@ -36,6 +36,8 @@
         </router-link>
       </div>
 
+      <promise-button v-if="siringWithId && nextActionAt * 1000 <= Date.now()" :click="giveBirth">生产</promise-button>
+
       <ul class="sub nav" v-if="me === owner && !sale && !siring && !siringWithId">
         <li class="placeholder"></li>
         <li class="nav-item" v-for="item in nav" :key="item.name" :class="{ active: $route.name === item.name }">
@@ -51,6 +53,7 @@
 <script>
 import web3, { contract } from '../../lib/web3';
 import FontAwesomeIcon from '@fortawesome/vue-fontawesome';
+import PromiseButton from '../controls/PromiseButton';
 import { genes, wei, cooldown, duration } from '../filters';
 
 const nav = [
@@ -79,6 +82,12 @@ export default {
         await contract.snakeCore.getSnakeInfo(id),
         { me: web3.eth.accounts[0], sale, siring, owner }
       );
+    },
+
+    async giveBirth() {
+      const id = this.$route.params.id;
+      await contract.waitForTx(await contract.snakeCore.giveBirth(id));
+      await this.refresh();
     }
   },
 
@@ -95,6 +104,7 @@ export default {
       generation: null,
       cooldownIndex: null,
       siringWithId: null,
+      nextActionAt: null,
       owner: null
     };
   },
@@ -104,7 +114,8 @@ export default {
   },
 
   components: {
-    FontAwesomeIcon
+    FontAwesomeIcon,
+    PromiseButton
   }
 }
 
