@@ -33,7 +33,7 @@
         </li>
       </ul>
 
-      <router-view :data="{ sale, siring }" :op="{ bid, cancel, sell, sire }" />
+      <router-view :src="this" :data="{ sale, siring }" :op="{ bid, cancel }" />
     </div>
   </div>
 </template>
@@ -51,6 +51,10 @@ const nav = [
 
 export default {
   name: 'snake',
+
+  beforeCreate() {
+    this.$on('executed', () => this.refresh());
+  },
 
   methods: {
     async refresh() {
@@ -82,22 +86,6 @@ export default {
       await (this.sale && contract.saleAuction.cancelAuction(id)) ||
             (this.siring && contract.siringAuction.cancelAuction(id));
 
-      await this.refresh();
-    },
-
-    async sell(startingPrice, endingPrice, duration) {
-      startingPrice = web3.toWei(startingPrice);
-      endingPrice = web3.toWei(endingPrice);
-      duration = duration * 3600 * 24;
-      await contract.waitForTx(await contract.snakeCore.createSaleAuction(this.id, startingPrice, endingPrice, duration));
-      await this.refresh();
-    },
-
-    async sire(startingPrice, endingPrice, duration) {
-      startingPrice = web3.toWei(startingPrice);
-      endingPrice = web3.toWei(endingPrice);
-      duration = duration * 3600 * 24;
-      await contract.waitForTx(await contract.snakeCore.createSiringAuction(this.id, startingPrice, endingPrice, duration));
       await this.refresh();
     }
   },
