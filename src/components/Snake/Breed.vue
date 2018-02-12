@@ -50,9 +50,9 @@ export default {
       const sireOwner = await contract.snakeCore.getOwner(sire);
 
       if (matronOwner === sireOwner) {
-        await contract.snakeCore.breedWith(matron.id, sire.id);
+        await contract.waitForTx(await contract.snakeCore.breedWith(matron.id, sire.id));
       } else {
-        await contract.snakeCore.bidOnSiringAuction(sire.id, matron.id, { value: sire.siring.currentPrice });
+        await contract.waitForTx(await contract.snakeCore.bidOnSiringAuction(sire.id, matron.id, { value: sire.siring.currentPrice }));
       }
 
       this.$props.src.$emit('executed');
