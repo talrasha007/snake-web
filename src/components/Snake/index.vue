@@ -33,7 +33,7 @@
         </li>
       </ul>
 
-      <router-view :src="this" :data="{ sale, siring }" :op="{ bid, cancel }" />
+      <router-view :src="this" />
     </div>
   </div>
 </template>
@@ -72,21 +72,6 @@ export default {
         await contract.snakeCore.getSnakeInfo(id),
         { me: web3.eth.accounts[0], sale, siring, owner }
       );
-    },
-
-    async bid() {
-      if (this.sale) {
-        await contract.waitForTx(await contract.saleAuction.bid(this.id, { value: this.sale.currentPrice }));
-        await this.refresh();
-      }
-    },
-
-    async cancel() {
-      const id = this.$route.params.id;
-      await (this.sale && contract.saleAuction.cancelAuction(id)) ||
-            (this.siring && contract.siringAuction.cancelAuction(id));
-
-      await this.refresh();
     }
   },
 

@@ -91,7 +91,7 @@ function extendAuction(snakeCore, auction, name) {
 
         const currentPrice = await auction.getCurrentPrice(id);
 
-        return { seller, currentPrice, startingPrice, endingPrice, duration, startedAt };
+        return { type: name, seller, currentPrice, startingPrice, endingPrice, duration, startedAt };
       } catch (e) {
 
       }

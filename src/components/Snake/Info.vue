@@ -27,14 +27,15 @@
     </div>
     <div class="placeholder"></div>
     <div>
-      <promise-button v-if="isMine" :click="() => op.cancel()">取消</promise-button>
-      <promise-button v-if="!isMine" :click="() => op.bid()">购买</promise-button>
+      <promise-button v-if="isMine" :click="cancel">取消</promise-button>
+      <promise-button v-if="!isMine && auction.type === 'sale'" :click="bid">购买</promise-button>
+      <promise-button v-if="!isMine && auction.type === 'siring'" :click="breed">交配</promise-button>
     </div>
   </div>
 </template>
 
 <script>
-import web3 from '../../lib/web3';
+import web3, { contract } from '../../lib/web3';
 import FontAwesomeIcon from '@fortawesome/vue-fontawesome';
 import PromiseButton from '../controls/PromiseButton';
 import { wei, duration } from '../filters';
@@ -42,11 +43,34 @@ import { wei, duration } from '../filters';
 export default {
   name: 'info',
 
-  props: ['data', 'op'],
+  props: ['src'],
+
+  methods: {
+    async cancel() {
+      const id = this.$route.params.id;
+      await contract.waitForTx(
+        await contract[`${this.auction.type}Auction`].cancelAuction(id)
+      );
+
+      this.$props.src.$emit('executed');
+    },
+
+    async bid() {
+      const id = this.$route.params.id;
+      await contract.waitForTx(await contract.saleAuction.bid(id, { value: this.auction.currentPrice }));
+
+      this.$props.src.$emit('executed');
+    },
+
+    async breed() {
+      const id = this.$route.params.id;
+      this.$router.push({ name: 'snake.breed', params: { id } });
+    }
+  },
 
   computed: {
     auction() {
-      const data = this.$props.data;
+      const data = this.$props.src;
       return data.sale || data.siring;
     },
 
