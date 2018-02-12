@@ -102,7 +102,8 @@ export default {
 
 import Info from './Info';
 import Auction from './Auction';
-export { Info, Auction };
+import Breed from './Breed';
+export { Info, Auction, Breed };
 </script>
 
 <style scoped lang="scss">

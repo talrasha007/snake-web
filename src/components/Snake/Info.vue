@@ -63,8 +63,7 @@ export default {
     },
 
     async breed() {
-      const id = this.$route.params.id;
-      this.$router.push({ name: 'snake.breed', params: { id } });
+      this.$router.push('breed');
     }
   },
 

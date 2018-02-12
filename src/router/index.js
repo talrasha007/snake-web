@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Profile from '../components/Profile';
-import Snake, { Info, Auction } from '../components/Snake';
+import Snake, { Info, Auction, Breed } from '../components/Snake';
 import Marketplace, { OnSale, Siring, All } from '../components/Marketplace';
 import Admin from '../components/Admin';
 
@@ -41,6 +41,11 @@ export default new Router({
           path: 'sell',
           name: 'snake.sell',
           component: Auction
+        },
+        {
+          path: 'breed',
+          name: 'snake.breed',
+          component: Breed
         },
         {
           path: 'sire',
