@@ -26,7 +26,7 @@
         </router-link>
       </div>
 
-      <ul class="sub nav">
+      <ul class="sub nav" v-if="me === owner && !sale && !siring">
         <li class="placeholder"></li>
         <li class="nav-item" v-for="item in nav" :key="item.name" :class="{ active: $route.name === item.name }">
           <router-link :to="{ name: item.name }">{{item.title}}</router-link>
@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import { contract } from '../../lib/web3';
+import web3, { contract } from '../../lib/web3';
 import FontAwesomeIcon from '@fortawesome/vue-fontawesome';
 import { genes, wei, cooldown } from '../filters';
 
@@ -57,13 +57,16 @@ export default {
       const id = this.$route.params.id;
       await contract.waitForInit;
 
+      const sale = await contract.saleAuction.getAuctionInfo(id);
+      const siring = await contract.siringAuction.getAuctionInfo(id);
+      const owner =
+        (sale && sale.seller) ||
+        (siring && siring.seller) ||
+        await contract.snakeCore.snakeIndexToOwner(id);
+
       Object.assign(this,
         await contract.snakeCore.getSnakeInfo(id),
-        {
-          sale: await contract.saleAuction.getAuctionInfo(id),
-          siring: await contract.siringAuction.getAuctionInfo(id),
-          owner: await contract.snakeCore.snakeIndexToOwner(id)
-        }
+        { me: web3.eth.accounts[0], sale, siring, owner }
       );
     },
 
@@ -94,6 +97,7 @@ export default {
 
     return {
       nav,
+      me: web3.eth.accounts[0],
       id: this.$route.params.id,
       genes: null,
       sale: null,
