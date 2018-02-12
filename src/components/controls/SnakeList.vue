@@ -78,7 +78,7 @@ ul {
     a {
       cursor: pointer;
       text-decoration: none;
-      display: block;
+      display: inline-block;
       margin: 25px 0;
 
       .snake-detail {
