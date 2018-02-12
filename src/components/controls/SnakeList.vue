@@ -9,8 +9,6 @@
 </template>
 
 <script>
-import { wei, cooldown, genes } from '../filters';
-import FontAwesomeIcon from '@fortawesome/vue-fontawesome';
 import SnakeDesc from './SnakeDesc';
 
 export default {
@@ -18,14 +16,7 @@ export default {
   props: ['snakes'],
 
   components: {
-    FontAwesomeIcon,
     SnakeDesc
-  },
-
-  filters: {
-    wei,
-    cooldown,
-    genes
   }
 }
 </script>
