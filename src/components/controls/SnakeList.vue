@@ -7,6 +7,10 @@
             <font-awesome-icon class="icon" :icon="['fab', 'ethereum']" />
             <span class="price">&nbsp;{{snake.sale.currentPrice | wei}}</span>
           </div>
+          <div v-if="snake.siring" class="snake-status">
+            <font-awesome-icon class="icon" :icon="['fas', 'transgender-alt']" />
+            <span class="price">&nbsp;{{snake.siring.currentPrice | wei}}</span>
+          </div>
           <div class="genes">{{snake.genes | genes}}</div>
         </div>
         <div class="snake-meta">

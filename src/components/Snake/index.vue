@@ -2,8 +2,14 @@
   <div>
     <div class="snake-head" :class="{ ['s' + id % 8]: true }">
       <div v-if="sale" class="snake-status">
+        <span>在售</span>
         <font-awesome-icon class="icon" :icon="['fab', 'ethereum']" />
         <span class="price">&nbsp;{{sale.currentPrice | wei}}</span>
+      </div>
+      <div v-if="siring" class="snake-status">
+        <span>配种</span>
+        <font-awesome-icon class="icon" :icon="['fas', 'transgender-alt']" />
+        <span class="price">&nbsp;{{siring.currentPrice | wei}}</span>
       </div>
       <span class="genes">{{genes | genes}}</span>
     </div>
