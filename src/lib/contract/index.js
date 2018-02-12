@@ -66,6 +66,14 @@ function extedSnakeCore(snakeCore, saleAuction, siringAuction) {
       };
     },
 
+    async getOwner(snake) {
+      const { id, sale, siring } = snake;
+
+      return (sale && sale.seller) ||
+        (siring && siring.seller) ||
+        await snakeCore.snakeIndexToOwner(id);
+    },
+
     async listByUser(owner) {
       const ret = [];
       const total = await snakeCore.balanceOf(owner);

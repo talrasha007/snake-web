@@ -7,6 +7,7 @@
       <snake-desc :snake="src" v-if="src" />
       <div class="placeholder"></div>
     </div>
+    <promise-button :click="breed">给它们点空间</promise-button>
     <h4>候选蛇</h4>
     <div class="snake-list">
       <snake-desc class="md" v-for="snake in candidates" :key="snake.id" :snake="snake" v-on:click.native="() => picked = snake" />
@@ -18,6 +19,7 @@
 import web3, { contract } from '../../lib/web3';
 import FontAwesomeIcon from '@fortawesome/vue-fontawesome';
 import SnakeDesc from '../controls/SnakeDesc';
+import PromiseButton from '../controls/PromiseButton';
 
 export default {
   name: 'breed',
@@ -28,7 +30,23 @@ export default {
     async refresh() {
       await contract.waitForInit;
       const candidates = await contract.snakeCore.listByUser(web3.eth.accounts[0]);
-      this.candidates = candidates.filter(s => s.id.toString() !== this.$route.params.id);
+      this.candidates = candidates.filter(s => s.id.toString() !== this.$route.params.id.toString());
+    },
+
+    async breed() {
+      const matron = this.picked;
+      const matronOwner = await contract.snakeCore.getOwner(matron);
+
+      const sire = this.$props.src;
+      const sireOwner = await contract.snakeCore.getOwner(sire);
+
+      if (matronOwner === sireOwner) {
+        await contract.snakeCore.breedWith(matron.id, sire.id);
+      } else {
+        await contract.snakeCore.bidOnSiringAuction(sire.id, matron.id, { value: sire.siring.currentPrice });
+      }
+
+      this.$props.src.$emit('executed');
     }
   },
 
@@ -43,7 +61,8 @@ export default {
 
   components: {
     SnakeDesc,
-    FontAwesomeIcon
+    FontAwesomeIcon,
+    PromiseButton
   }
 }
 </script>

@@ -69,10 +69,7 @@ export default {
 
       const sale = await contract.saleAuction.getAuctionInfo(id);
       const siring = await contract.siringAuction.getAuctionInfo(id);
-      const owner =
-        (sale && sale.seller) ||
-        (siring && siring.seller) ||
-        await contract.snakeCore.snakeIndexToOwner(id);
+      const owner = await contract.snakeCore.getOwner({ id, sale, siring });
 
       Object.assign(this,
         await contract.snakeCore.getSnakeInfo(id),
