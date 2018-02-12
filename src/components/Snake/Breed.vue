@@ -7,10 +7,15 @@
       <snake-desc :snake="src" v-if="src" />
       <div class="placeholder"></div>
     </div>
+    <h4>候选蛇</h4>
+    <div class="snake-list">
+      <snake-desc class="md" v-for="snake in candidates" :key="snake.id" :snake="snake" v-on:click.native="() => picked = snake" />
+    </div>
   </div>
 </template>
 
 <script>
+import web3, { contract } from '../../lib/web3';
 import FontAwesomeIcon from '@fortawesome/vue-fontawesome';
 import SnakeDesc from '../controls/SnakeDesc';
 
@@ -19,9 +24,20 @@ export default {
 
   props: ['src'],
 
+  methods: {
+    async refresh() {
+      await contract.waitForInit;
+      const candidates = await contract.snakeCore.listByUser(web3.eth.accounts[0]);
+      this.candidates = candidates.filter(s => s.id.toString() !== this.$route.params.id);
+    }
+  },
+
   data() {
+    this.refresh();
+
     return {
-      picked: { id: '挑选配对的蛇' }
+      picked: { id: '挑选配对的蛇' },
+      candidates: []
     };
   },
 
@@ -33,7 +49,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.breed {
+.breed, .snake-list {
   display: flex;
   flex-flow: row wrap;
   align-items: center;
@@ -45,5 +61,9 @@ export default {
     z-index: 999;
     margin: -10px;
   }
+}
+
+h4 {
+  text-align: left;
 }
 </style>

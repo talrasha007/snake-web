@@ -13,8 +13,8 @@
     </div>
     <div class="snake-meta">
       <span class="snake-id">#{{snake.id}}</span>
-      <span v-if="snake.generation">{{snake.generation}}代</span>
-      <span v-if="snake.cooldownIndex">{{snake.cooldownIndex | cooldown}}</span>
+      <span v-if="snake.generation >= 0">{{snake.generation}}代</span>
+      <span v-if="snake.cooldownIndex >= 0">{{snake.cooldownIndex | cooldown}}</span>
     </div>
   </div>
 </template>
