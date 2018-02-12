@@ -30,7 +30,15 @@ export default {
     async refresh() {
       await contract.waitForInit;
       const candidates = await contract.snakeCore.listByUser(web3.eth.accounts[0]);
-      this.candidates = candidates.filter(s => s.id.toString() !== this.$route.params.id.toString());
+      for (const c of candidates) {
+        Object.assign(c, await contract.snakeCore.getSnakeInfo(c.id));
+      }
+
+      this.candidates = candidates.filter(
+        s =>
+          s.id.toString() !== this.$route.params.id.toString() &&
+          !s.siringWithId
+      );
     },
 
     async breed() {
