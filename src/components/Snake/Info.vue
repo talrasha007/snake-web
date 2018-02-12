@@ -1,10 +1,10 @@
 <template>
-  <div class="bid-box" v-if="data.sale">
+  <div class="bid-box" v-if="auction">
     <div class="price">
       <div>当前价</div>
       <div>
         <font-awesome-icon class="icon" :icon="['fab', 'ethereum']" />
-        {{data.sale.currentPrice | wei}}
+        {{auction.currentPrice | wei}}
       </div>
     </div>
     <div>
@@ -15,24 +15,26 @@
       <div>起始价</div>
       <div>
         <font-awesome-icon class="icon" :icon="['fab', 'ethereum']" />
-        {{data.sale.startingPrice | wei}}
+        {{auction.startingPrice | wei}}
       </div>
     </div>
     <div>
       <div>结束价</div>
       <div>
         <font-awesome-icon class="icon" :icon="['fab', 'ethereum']" />
-        {{data.sale.endingPrice | wei}}
+        {{auction.endingPrice | wei}}
       </div>
     </div>
     <div class="placeholder"></div>
     <div>
-      <promise-button :click="() => op.bid()">购买</promise-button>
+      <promise-button v-if="isMine" :click="() => op.cancel()">取消</promise-button>
+      <promise-button v-if="!isMine" :click="() => op.bid()">购买</promise-button>
     </div>
   </div>
 </template>
 
 <script>
+import web3 from '../../lib/web3';
 import FontAwesomeIcon from '@fortawesome/vue-fontawesome';
 import PromiseButton from '../controls/PromiseButton';
 import { wei, duration } from '../filters';
@@ -43,9 +45,18 @@ export default {
   props: ['data', 'op'],
 
   computed: {
+    auction() {
+      const data = this.$props.data;
+      return data.sale || data.siring;
+    },
+
     timeLeft() {
-      const sale = this.$props.data.sale;
-      return sale && Math.max(0, sale.startedAt + sale.duration - Date.now() / 1000);
+      const auction = this.auction;
+      return auction && Math.max(0, auction.startedAt + auction.duration - Date.now() / 1000);
+    },
+
+    isMine() {
+      return web3.eth.accounts[0] === this.auction.seller;
     }
   },
 

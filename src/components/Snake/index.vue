@@ -33,7 +33,7 @@
         </li>
       </ul>
 
-      <router-view :data="{ sale }" :op="{ bid, sell, sire }" />
+      <router-view :data="{ sale, siring }" :op="{ bid, cancel, sell, sire }" />
     </div>
   </div>
 </template>
@@ -71,7 +71,17 @@ export default {
     },
 
     async bid() {
-      await contract.waitForTx(await contract.saleAuction.bid(this.id, { value: this.sale.currentPrice }));
+      if (this.sale) {
+        await contract.waitForTx(await contract.saleAuction.bid(this.id, { value: this.sale.currentPrice }));
+        await this.refresh();
+      }
+    },
+
+    async cancel() {
+      const id = this.$route.params.id;
+      await (this.sale && contract.saleAuction.cancelAuction(id)) ||
+            (this.siring && contract.siringAuction.cancelAuction(id));
+
       await this.refresh();
     },
 
