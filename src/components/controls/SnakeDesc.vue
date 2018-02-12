@@ -33,6 +33,7 @@ export default {
     const snake = this.$props.snake;
 
     if (!snake.genes && snake.id >= 0) {
+      await contract.waitForInit;
       Object.assign(snake, await contract.snakeCore.getSnakeInfo(snake.id));
     }
   },
