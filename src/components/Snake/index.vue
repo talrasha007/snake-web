@@ -46,7 +46,7 @@ import { genes, wei, cooldown } from '../filters';
 const nav = [
   { name: 'snake.sell', title: '出售' },
   { name: 'snake.sire', title: '配种' },
-  { name: 'snake.breed', title: '交配' }
+  { name: 'snake.breed', title: '繁衍' }
 ];
 
 export default {
