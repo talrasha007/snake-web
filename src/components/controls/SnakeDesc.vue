@@ -1,6 +1,6 @@
 <template>
   <div class="snake-container">
-    <div class="snake-detail" :class="{ ['s' + snake.id % 8]: true }">
+    <div class="snake-detail" :class="{ ['s' + ((snake.id % 8) || 0)]: true }">
       <div v-if="snake.sale" class="snake-status">
         <font-awesome-icon class="icon" :icon="['fab', 'ethereum']" />
         <span class="price">&nbsp;{{snake.sale.currentPrice | wei}}</span>
