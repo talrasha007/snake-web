@@ -11,8 +11,8 @@
         <font-awesome-icon class="icon" :icon="['fas', 'transgender-alt']" />
         <span class="price">&nbsp;{{siring.currentPrice | wei}}</span>
       </div>
-      <div v-if="siringWithId" class="snake-status">
-        <font-awesome-icon class="icon" :icon="['fas', 'venus-double']" />
+      <div v-if="siringWithId || nextActionAt > Date.now() / 1000" class="snake-status">
+        <font-awesome-icon class="icon" :icon="['fas', siringWithId ? 'venus-double' : 'clock']" />
         <span class="price">{{nextActionAt - Date.now() / 1000 | duration}}</span>
       </div>
       <span class="genes">{{genes | genes}}</span>
@@ -38,7 +38,7 @@
 
       <promise-button v-if="siringWithId && nextActionAt * 1000 <= Date.now()" :click="giveBirth">生产</promise-button>
 
-      <ul class="sub nav" v-if="me === owner && !sale && !siring && !siringWithId">
+      <ul class="sub nav" v-if="me === owner && !sale && !siring && !siringWithId && nextActionAt <= Date.now() / 1000">
         <li class="placeholder"></li>
         <li class="nav-item" v-for="item in nav" :key="item.name" :class="{ active: $route.name === item.name }">
           <router-link :to="{ name: item.name }">{{item.title}}</router-link>

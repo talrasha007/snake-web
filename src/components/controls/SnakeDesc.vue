@@ -9,8 +9,8 @@
         <font-awesome-icon class="icon" :icon="['fas', 'transgender-alt']" />
         <span class="price">&nbsp;{{snake.siring.currentPrice | wei}}</span>
       </div>
-      <div v-if="snake.siringWithId" class="snake-status">
-        <font-awesome-icon class="icon" :icon="['fas', 'venus-double']" />
+      <div v-if="snake.siringWithId || snake.nextActionAt > Date.now() / 1000" class="snake-status">
+        <font-awesome-icon class="icon" :icon="['fas', snake.siringWithId ? 'venus-double' : 'clock']" />
         <span class="price">{{snake.nextActionAt - Date.now() / 1000 | duration}}</span>
       </div>
       <div class="genes">{{snake.genes | genes}}</div>

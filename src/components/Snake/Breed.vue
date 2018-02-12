@@ -37,6 +37,7 @@ export default {
       this.candidates = candidates.filter(
         s =>
           s.id.toString() !== this.$route.params.id.toString() &&
+          s.nextActionAt <= Date.now() / 1000 &&
           !s.siringWithId
       );
     },
